@@ -2,14 +2,14 @@ name: Build with Gradle
 
 on:
   push:
-    branches: [ "main" ]  # 代码推送到 main 分支时触发
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]  # PR 到 main 分支时触发
-  workflow_dispatch:      # 允许手动触发
+    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # 使用 Ubuntu 环境
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4  # 检出代码
@@ -17,18 +17,18 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '17'  # 根据项目需求选择 JDK 版本（如 8, 11, 17）
-          distribution: 'temurin'  # 使用 Eclipse Temurin JDK
+          java-version: '17'
+          distribution: 'temurin'
 
       - name: Grant execute permission to gradlew
-        run: chmod +x gradlew  # 确保 gradlew 可执行
+        run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew embedProxyJar  # 执行你的编译命令
+        run: ./gradlew embedProxyJar
 
       - name: Upload Artifact (可选)
-        if: success()  # 仅在编译成功时上传
-        uses: actions/upload-artifact@v3
+        if: success()
+        uses: actions/upload-artifact@v4  # 关键修改：v3 → v4
         with:
           name: output-jar
-          path: build/libs/*.jar  # 假设生成的 jar 在 build/libs 目录
+          path: build/libs/*.jar
